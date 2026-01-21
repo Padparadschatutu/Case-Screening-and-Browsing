@@ -16,9 +16,9 @@ except Exception:  # pragma: no cover
     from storage import LabelStore
 
 
-ROOT = Path(__file__).resolve().parents[1]  # /home/fmeng/Head
+ROOT = Path(__file__).resolve().parents[1]  # /home/Head
 EXCEL_PATH = ROOT / "数据_筛选结果.xlsx"
-STROKE_ROOT = Path("/home/fmeng/Head_Stroke")
+STROKE_ROOT = Path("/home/Head_Stroke")
 LABELS_PATH = ROOT / "labels" / "labels.json"
 
 # In-memory cache for rendered slice images (speeds up scroll/drag with prefetch).
