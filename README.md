@@ -46,7 +46,7 @@ Head_Stroke/
 在服务器上执行：
 
 ```bash
-cd /home/fmeng/Head
+cd /home/Head
 python3 backend/app.py
 ```
 
