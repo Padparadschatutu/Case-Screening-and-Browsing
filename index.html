@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Head CTA 病例筛选与浏览</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <!-- Boot indicator: visible even if JS/CSS fails to load -->
+    <div
+      id="boot"
+      style="
+        position: fixed;
+        z-index: 9999;
+        top: 10px;
+        left: 10px;
+        max-width: calc(100vw - 20px);
+        padding: 10px 12px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        border-radius: 10px;
+        background: rgba(2, 6, 23, 0.92);
+        color: #e5e7eb;
+        font: 14px/1.4 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      "
+    >
+      页面已加载，正在初始化…
+    </div>
+
+    <div class="app">
+      <div class="panel">
+        <header>
+          <div class="title">筛选</div>
+          <div class="badge">Excel: <span id="total">0</span></div>
+        </header>
+        <div class="content">
+          <label>cta_category（大类）</label>
+          <select id="category"></select>
+
+          <label>条码号（支持模糊检索，回车刷新）</label>
+          <input id="barcode" placeholder="例如：A106..." />
+
+          <div class="row" style="margin-top: 10px">
+            <button id="refresh">刷新列表</button>
+            <button id="save">保存当前勾选</button>
+          </div>
+
+          <div class="hint">
+            快捷键：<br />
+            - 空格：切换“勾选框”（不会自动跳转）<br />
+            - ←/→：上一例/下一例（跳转前自动保存）<br />
+          </div>
+
+          <div class="list">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <div style="font-weight:700;">病例列表</div>
+              <div class="badge" id="count">0 条</div>
+            </div>
+            <div id="list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel viewer">
+        <header>
+          <div class="title">CTA 浏览</div>
+          <div class="badge">条码号：<span id="curBarcode">-</span></div>
+        </header>
+
+        <div class="toolbar">
+          <div class="box">
+            <div class="k">cta_category</div>
+            <div class="v" id="curCategory">-</div>
+          </div>
+          <div class="box">
+            <div class="k">匹配文件夹</div>
+            <div class="v" id="curFolder">-</div>
+          </div>
+          <div class="box">
+            <div class="k">CTA 文件</div>
+            <select id="ctaFile"></select>
+          </div>
+          <div class="box">
+            <div class="k">方向</div>
+            <select id="axis">
+              <option value="z">z（轴位）</option>
+              <option value="y">y（冠状）</option>
+              <option value="x">x（矢状）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="reportBar">
+          <div class="box reportBox">
+            <div class="k">CTA 检查结论</div>
+            <div class="reportText" id="ctaConclusion">-</div>
+          </div>
+          <div class="box reportBox">
+            <div class="k">CTA 检查所见</div>
+            <div class="reportText" id="ctaFindings">-</div>
+          </div>
+        </div>
+
+        <div class="canvasWrap">
+          <div class="imgFrame" id="imgFrame">
+            <img id="img" alt="请选择病例" draggable="false" />
+            <div class="viewOverlay" id="viewOverlay">
+              <button class="mini" id="fit">适应</button>
+              <button class="mini" id="one">1:1</button>
+              <button class="mini" id="zoomOut">−</button>
+              <button class="mini" id="zoomIn">+</button>
+              <span class="zoomText" id="zoomText">100%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div>
+            <label>切片</label>
+            <input id="slice" type="range" min="0" max="0" value="0" />
+            <div class="hint" id="sliceLabel">0 / 0</div>
+          </div>
+
+          <div>
+            <label>窗位 wc（可选）</label>
+            <input id="wc" placeholder="例如：40" />
+          </div>
+          <div>
+            <label>窗宽 ww（可选）</label>
+            <input id="ww" placeholder="例如：80" />
+          </div>
+
+          <div>
+            <label>导航</label>
+            <div class="row">
+              <button id="prev">上一例 (←)</button>
+              <button id="next">下一例 (→)</button>
+            </div>
+            <div class="inline" style="margin-top:10px;">
+              <input id="checked" type="checkbox" />
+              <div class="big">勾选（空格）</div>
+            </div>
+            <div class="hint">自动保存时间：<span id="updatedAt"></span></div>
+          </div>
+
+          <div class="status" id="status"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
